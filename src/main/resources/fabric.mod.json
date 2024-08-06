@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "pragmatica",
+	"version": "${version}",
+	"name": "Pragmatica",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"z3roco01"
+	],
+	"contact": {
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "Unlicense",
+	"icon": "assets/pragmatica/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "z3roco01.pragmatica.Pragmatica",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "z3roco01.pragmatica.PragmaticaClient",
+				"adapter": "kotlin"
+			}
+		],
+		"fabric-datagen": [
+			{
+				"value": "z3roco01.pragmatica.datagen.PragmaticaDataGenerator",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"pragmatica.mixins.json",
+		{
+			"config": "pragmatica.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,11 +1,11 @@
 package z3roco01.pragmatica.screen
 
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import z3roco01.pragmatica.PragmaticaClient
 
 class BatteryScreen(handler: BatteryScreenHandler, playerInv: PlayerInventory, title: Text) : HandledScreen<BatteryScreenHandler>(handler, playerInv, title) {
     val TEXTURE: Identifier = Identifier.ofVanilla("textures/gui/container/dispenser.png")
@@ -13,6 +13,16 @@ class BatteryScreen(handler: BatteryScreenHandler, playerInv: PlayerInventory, t
     override fun init() {
         super.init()
         this.titleX = (this.backgroundWidth - textRenderer.getWidth(this.title)) / 2
+
+        PragmaticaClient.LOGGER.info(this.getAmount().toString() + " / " + this.getCapacity().toString())
+    }
+
+    protected fun getAmount(): Long {
+        return handler.data.amount
+    }
+
+    protected fun getCapacity(): Long {
+        return handler.data.capacity
     }
 
     override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, delta: Float) {

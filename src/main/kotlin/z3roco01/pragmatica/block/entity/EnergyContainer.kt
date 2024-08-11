@@ -10,6 +10,7 @@ import net.minecraft.util.math.Direction
 import team.reborn.energy.api.base.SimpleSidedEnergyContainer
 import z3roco01.pragmatica.Pragmatica
 import kotlin.math.max
+import kotlin.math.min
 
 abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) : BlockEntity(type, pos, state) {
     companion object {
@@ -55,7 +56,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
 
     fun incrementEnergy(amount: Long) {
         // get the energy and add the amount, also keep it in check with the capacity
-        setEnergy(max(getEnergy() + amount, energyStorage.getCapacity()))
+        setEnergy(min(getEnergy() + amount, energyStorage.getCapacity()))
     }
 
     fun decrementEnergy(amount: Long) {
@@ -67,7 +68,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
         super.readNbt(nbt, registryLookup)
         // extract all information abt energy from the nbt
         val nbtData = nbt.get(ENERGY_DATA_KEY) as NbtCompound
-        this.energyStorage.amount = max(nbtData.getLong(AMOUNT_ENERGY_KEY), getEnergyCapacity()) // make sure the amount of energy doesnt exceed the max
+        this.energyStorage.amount = min(nbtData.getLong(AMOUNT_ENERGY_KEY), getEnergyCapacity()) // make sure the amount of energy doesnt exceed the max
     }
 
     override fun writeNbt(nbt: NbtCompound, registryLookup: RegistryWrapper.WrapperLookup) {

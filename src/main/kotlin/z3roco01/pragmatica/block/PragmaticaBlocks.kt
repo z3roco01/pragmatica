@@ -10,7 +10,7 @@ import z3roco01.pragmatica.Pragmatica
 
 class PragmaticaBlocks {
     companion object {
-        val BATTERY_BLOCK = BatteryBlock(128000, 4000)
+        val BATTERY_BLOCK = BatteryBlock()
 
         fun register() {
             register(BATTERY_BLOCK, "battery")

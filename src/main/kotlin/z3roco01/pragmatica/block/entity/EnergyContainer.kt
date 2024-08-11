@@ -2,21 +2,27 @@ package z3roco01.pragmatica.block.entity
 
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.RegistryWrapper
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.World
+import team.reborn.energy.api.EnergyStorage
+import team.reborn.energy.api.EnergyStorageUtil
 import team.reborn.energy.api.base.SimpleSidedEnergyContainer
-import z3roco01.pragmatica.Pragmatica
 import kotlin.math.max
 import kotlin.math.min
 
-abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) : BlockEntity(type, pos, state) {
-    companion object {
-        val ENERGY_DATA_KEY = "pragmatica:energy"
-        val AMOUNT_ENERGY_KEY = "energy"
-    }
+abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) : BlockEntity(type, pos, state), BlockEntityTicker<EnergyContainer> {
+    val sideIOMap = mapOf(
+        Direction.DOWN  to IOPermission.INSERT,
+        Direction.UP    to IOPermission.INSERT,
+        Direction.NORTH to IOPermission.INSERT,
+        Direction.SOUTH to IOPermission.INSERT,
+        Direction.WEST  to IOPermission.INSERT,
+        Direction.EAST  to IOPermission.INSERT)
 
     val energyStorage = object: SimpleSidedEnergyContainer() {
         override fun onFinalCommit() {
@@ -28,11 +34,15 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
         }
 
         override fun getMaxInsert(side: Direction?): Long {
-            return getMaxIns()
+            if(side == null || canInsertSide(side))
+                return getMaxIns()
+            return 0
         }
 
         override fun getMaxExtract(side: Direction?): Long {
-            return getMaxExt()
+            if(side == null || canExtractSide(side))
+                return getMaxExt()
+            return 0
         }
     }
 
@@ -43,6 +53,29 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
 
     abstract protected fun getMaxExt(): Long
 
+    // push power to all blocks accepting that are beside this block
+    override fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: EnergyContainer) {
+        if(world.isClient || getEnergy() <= 0) return
+
+        for(side in Direction.entries) {
+            EnergyStorageUtil.move(
+                energyStorage.getSideStorage(side),
+                EnergyStorage.SIDED.find(world, pos.offset(side), side.opposite),
+                Long.MAX_VALUE,
+                null
+            )
+        }
+    }
+
+    protected fun canExtractSide(side: Direction): Boolean {
+        val sidePerms = sideIOMap.get(side)
+        return (sidePerms == IOPermission.EXTRACT || sidePerms == IOPermission.INS_EXT)
+    }
+
+    protected fun canInsertSide(side: Direction): Boolean {
+        val sidePerms = sideIOMap.get(side)
+        return (sidePerms == IOPermission.INSERT || sidePerms == IOPermission.INS_EXT)
+    }
 
     fun setEnergy(amount: Long) {
         // set the amount ( make sure it never goes above the capacity ), and mark the block entity as dirty
@@ -72,11 +105,22 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
     }
 
     override fun writeNbt(nbt: NbtCompound, registryLookup: RegistryWrapper.WrapperLookup) {
-        Pragmatica.LOGGER.info("penis")
         super.writeNbt(nbt, registryLookup)
         // store all information abt energy in the nbt
         val nbtData = NbtCompound()
         nbtData.putLong(AMOUNT_ENERGY_KEY, energyStorage.amount)
         nbt.put(ENERGY_DATA_KEY, nbtData)
+    }
+
+    companion object {
+        val ENERGY_DATA_KEY = "pragmatica:energy"
+        val AMOUNT_ENERGY_KEY = "energy"
+    }
+
+    enum class IOPermission {
+        NONE,
+        INSERT,
+        EXTRACT,
+        INS_EXT
     }
 }

@@ -13,7 +13,7 @@ import z3roco01.pragmatica.screen.BatteryScreenHandler
 
 class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(PragmaticaBlockEntities.BATTERY_BLOCK, pos, state), ExtendedScreenHandlerFactory<BatteryScreenHandler.EnergyContainerScreenData> {
     override fun getEnergyCapacity(): Long {
-        return 128000
+        return 32000
     }
 
     override fun getMaxIns(): Long {
@@ -25,7 +25,7 @@ class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(Pra
     }
 
     override fun createMenu(syncId: Int, playerInv: PlayerInventory, player: PlayerEntity): ScreenHandler {
-        return BatteryScreenHandler(syncId, playerInv, BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity()))
+        return BatteryScreenHandler(syncId, playerInv, BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos))
     }
 
     override fun getDisplayName(): Text {
@@ -33,7 +33,7 @@ class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(Pra
     }
 
     override fun getScreenOpeningData(player: ServerPlayerEntity): BatteryScreenHandler.EnergyContainerScreenData {
-        return BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity())
+        return BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos)
     }
 
 }

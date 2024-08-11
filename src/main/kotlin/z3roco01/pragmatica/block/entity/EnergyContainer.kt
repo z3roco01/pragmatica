@@ -1,17 +1,21 @@
 package z3roco01.pragmatica.block.entity
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityTicker
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.registry.RegistryWrapper
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import team.reborn.energy.api.EnergyStorage
 import team.reborn.energy.api.EnergyStorageUtil
 import team.reborn.energy.api.base.SimpleSidedEnergyContainer
+import z3roco01.pragmatica.network.SyncEnergyContainerPayload
 import kotlin.math.max
 import kotlin.math.min
 
@@ -27,6 +31,11 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
     val energyStorage = object: SimpleSidedEnergyContainer() {
         override fun onFinalCommit() {
             markDirty()
+
+            if(world != null && !world!!.isClient){
+                for(player in PlayerLookup.tracking(world as ServerWorld, getPos()))
+                    ServerPlayNetworking.send(player, SyncEnergyContainerPayload(this.amount, getPos()))
+            }
         }
 
         override fun getCapacity(): Long {

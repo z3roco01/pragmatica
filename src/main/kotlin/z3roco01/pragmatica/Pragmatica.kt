@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer
 import org.slf4j.LoggerFactory
 import z3roco01.pragmatica.block.PragmaticaBlocks
 import z3roco01.pragmatica.block.entity.PragmaticaBlockEntities
+import z3roco01.pragmatica.network.PragmaticaServerPayloads
 import z3roco01.pragmatica.screen.PragmaticaScreenHandlers
 
 object Pragmatica : ModInitializer {
@@ -16,5 +17,6 @@ object Pragmatica : ModInitializer {
 		PragmaticaBlocks.register()
 		PragmaticaBlockEntities.register()
 		PragmaticaScreenHandlers.register()
+		PragmaticaServerPayloads.register()
 	}
 }

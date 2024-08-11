@@ -8,10 +8,14 @@ import net.minecraft.network.codec.PacketCodec
 import net.minecraft.network.codec.PacketCodecs
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.slot.Slot
+import net.minecraft.util.math.BlockPos
+import z3roco01.pragmatica.block.entity.BatteryBlockEntity
 
 class BatteryScreenHandler(syncId: Int, playerInv: PlayerInventory, val data: EnergyContainerScreenData) : ScreenHandler(PragmaticaScreenHandlers.BATTERY_SCREEN_HANDLER, syncId){
+    val blockEntity: BatteryBlockEntity
     init {
         addPlayerInventory(playerInv)
+        blockEntity = playerInv.player.world.getBlockEntity(data.pos) as BatteryBlockEntity
     }
 
     override fun quickMove(player: PlayerEntity, slot: Int): ItemStack {
@@ -58,14 +62,13 @@ class BatteryScreenHandler(syncId: Int, playerInv: PlayerInventory, val data: En
         }
     }
 
-    data class EnergyContainerScreenData(val amount: Long, val capacity: Long) {
+    data class EnergyContainerScreenData(val amount: Long, val capacity: Long, val pos: BlockPos) {
         companion object {
             val PACKET_CODEC: PacketCodec<RegistryByteBuf, EnergyContainerScreenData> = PacketCodec.tuple(
-                PacketCodecs.VAR_LONG,
-                EnergyContainerScreenData::amount,
-                PacketCodecs.VAR_LONG,
-                EnergyContainerScreenData::capacity
-            ) { amount: Long, capacity: Long -> EnergyContainerScreenData(amount, capacity) }
+                PacketCodecs.VAR_LONG, EnergyContainerScreenData::amount,
+                PacketCodecs.VAR_LONG, EnergyContainerScreenData::capacity,
+                BlockPos.PACKET_CODEC, EnergyContainerScreenData::pos,
+            ) { amount: Long, capacity: Long, pos: BlockPos -> EnergyContainerScreenData(amount, capacity, pos) }
         }
     }
 }

@@ -6,18 +6,18 @@ import z3roco01.pragmatica.block.entity.EnergyContainer
 class PragmaticaClientPayloads {
     companion object {
         fun register() {
-            ClientPlayNetworking.registerGlobalReceiver(SyncEnergyContainerPayload.ID, {payload, context ->
+            ClientPlayNetworking.registerGlobalReceiver(SyncEnergyContainerPayload.ID) { payload, context ->
                 val energy = payload.amount
                 val pos = payload.pos
                 val world = context.client().world
 
-                if(world == null) return@registerGlobalReceiver
+                if (world == null) return@registerGlobalReceiver
 
                 val blockEntity = world.getBlockEntity(pos)
 
-                if(blockEntity is EnergyContainer)
+                if (blockEntity is EnergyContainer)
                     blockEntity.energyStorage.amount = energy
-            })
+            }
         }
     }
 }

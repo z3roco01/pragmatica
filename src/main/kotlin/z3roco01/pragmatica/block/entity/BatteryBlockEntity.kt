@@ -9,9 +9,10 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import z3roco01.pragmatica.screen.BatteryScreenHandler
+import z3roco01.pragmatica.screen.EnergyScreenHandler
 
 
-class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(PragmaticaBlockEntities.BATTERY_BLOCK, pos, state), ExtendedScreenHandlerFactory<BatteryScreenHandler.EnergyContainerScreenData> {
+class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(PragmaticaBlockEntities.BATTERY_BLOCK, pos, state), ExtendedScreenHandlerFactory<EnergyScreenHandler.EnergyContainerScreenData> {
     override fun getEnergyCapacity(): Long {
         return 32000
     }
@@ -25,15 +26,17 @@ class BatteryBlockEntity(pos: BlockPos, state: BlockState) : EnergyContainer(Pra
     }
 
     override fun createMenu(syncId: Int, playerInv: PlayerInventory, player: PlayerEntity): ScreenHandler {
-        return BatteryScreenHandler(syncId, playerInv, BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos))
+        return BatteryScreenHandler(syncId, playerInv,
+            EnergyScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos)
+        )
     }
 
     override fun getDisplayName(): Text {
         return Text.translatable(cachedState.block.translationKey)
     }
 
-    override fun getScreenOpeningData(player: ServerPlayerEntity): BatteryScreenHandler.EnergyContainerScreenData {
-        return BatteryScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos)
+    override fun getScreenOpeningData(player: ServerPlayerEntity): EnergyScreenHandler.EnergyContainerScreenData {
+        return EnergyScreenHandler.EnergyContainerScreenData(this.getEnergy(), this.getEnergyCapacity(), pos)
     }
 
 }

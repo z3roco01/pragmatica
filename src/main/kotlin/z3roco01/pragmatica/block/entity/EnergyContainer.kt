@@ -32,10 +32,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
         override fun onFinalCommit() {
             markDirty()
 
-            if(world != null && !world!!.isClient){
-                for(player in PlayerLookup.tracking(world as ServerWorld, getPos()))
-                    ServerPlayNetworking.send(player, SyncEnergyContainerPayload(this.amount, getPos()))
-            }
+            syncEnergy()
         }
 
         override fun getCapacity(): Long {
@@ -52,6 +49,14 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
             if(side == null || canExtractSide(side))
                 return getMaxExt()
             return 0
+        }
+    }
+
+    // Syncs the energy amount to the client
+    fun syncEnergy() {
+        if(world != null && !world!!.isClient){
+            for(player in PlayerLookup.tracking(world as ServerWorld, getPos()))
+                ServerPlayNetworking.send(player, SyncEnergyContainerPayload(getEnergy(), getPos()))
         }
     }
 
@@ -88,7 +93,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
 
     fun setEnergy(amount: Long) {
         // set the amount ( make sure it never goes above the capacity ), and mark the block entity as dirty
-        energyStorage.amount = max(amount, energyStorage.getCapacity())
+        energyStorage.amount = min(amount, energyStorage.getCapacity())
         markDirty()
     }
 
@@ -98,7 +103,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
 
     fun incrementEnergy(amount: Long) {
         // get the energy and add the amount, also keep it in check with the capacity
-        setEnergy(min(getEnergy() + amount, energyStorage.getCapacity()))
+        setEnergy(getEnergy() + amount)
     }
 
     fun decrementEnergy(amount: Long) {
@@ -111,6 +116,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
         // extract all information abt energy from the nbt
         val nbtData = nbt.get(ENERGY_DATA_KEY) as NbtCompound
         this.energyStorage.amount = min(nbtData.getLong(AMOUNT_ENERGY_KEY), getEnergyCapacity()) // make sure the amount of energy doesnt exceed the max
+        syncEnergy()
     }
 
     override fun writeNbt(nbt: NbtCompound, registryLookup: RegistryWrapper.WrapperLookup) {

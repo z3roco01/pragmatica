@@ -1,0 +1,44 @@
+package z3roco01.pragmatica.screen.element
+
+import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder
+import net.minecraft.client.world.ClientWorld
+import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
+import z3roco01.pragmatica.Pragmatica
+import z3roco01.pragmatica.screen.EnergyScreenHandler
+import kotlin.math.round
+
+class EnergyBarElement(x: Int, y: Int, val handler: EnergyScreenHandler, val client: MinecraftClient): GUIElement(x, y) {
+    val ENERGY_BAR_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar.png")
+    val ENERGY_BAR_BG_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar_bg.png")
+
+    protected fun getWorld(): ClientWorld? {
+        return this.client.world
+    }
+
+    protected fun getPos(): BlockPos {
+        return handler.data.pos
+    }
+
+    protected fun getAmount(): Long {
+        return handler.blockEntity.getEnergy()
+    }
+
+    protected fun getCapacity(): Long {
+        return handler.blockEntity.getEnergyCapacity()
+    }
+
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+        val barHeight = round((getAmount().toFloat() / getCapacity().toFloat()) * 52f).toInt()
+        context.drawTexture(ENERGY_BAR_BG_TEXT, x-1, y-52, 0f, 0f, 18, 54, 18, 54)
+        context.drawTexture(ENERGY_BAR_TEXT, x, y - barHeight + 1, 0, 0f, 52f - barHeight.toFloat(), 16, barHeight, 16, 52)
+    }
+
+    override fun drawMouseoverTooltip(context: DrawContext, x: Int, y: Int) {
+    }
+
+    override fun appendNarrations(builder: NarrationMessageBuilder) {
+    }
+}

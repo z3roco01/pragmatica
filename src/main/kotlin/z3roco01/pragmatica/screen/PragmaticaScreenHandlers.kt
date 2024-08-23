@@ -9,7 +9,7 @@ import z3roco01.pragmatica.Pragmatica
 
 class PragmaticaScreenHandlers {
     companion object {
-        val BATTERY_SCREEN_HANDLER = ExtendedScreenHandlerType<BatteryScreenHandler, BatteryScreenHandler.EnergyContainerScreenData>(::BatteryScreenHandler, BatteryScreenHandler.EnergyContainerScreenData.PACKET_CODEC)
+        val BATTERY_SCREEN_HANDLER = ExtendedScreenHandlerType<BatteryScreenHandler, EnergyScreenHandler.EnergyContainerScreenData>(::BatteryScreenHandler, EnergyScreenHandler.EnergyContainerScreenData.PACKET_CODEC)
 
         fun register() {
             register("battery", BATTERY_SCREEN_HANDLER)

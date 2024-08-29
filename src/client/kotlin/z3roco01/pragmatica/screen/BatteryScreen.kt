@@ -15,13 +15,12 @@ class BatteryScreen(handler: BatteryScreenHandler, playerInv: PlayerInventory, t
     override fun init() {
         super.init()
         this.titleX = (this.backgroundWidth - textRenderer.getWidth(this.title)) / 2
-        energyBar = EnergyBarElement(80, 68, handler, client!!)
+        energyBar = EnergyBarElement(80, 68, handler)
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
         super.render(context, mouseX, mouseY, delta)
         this.drawMouseoverTooltip(context, mouseX, mouseY)
-        energyBar.drawMouseoverTooltip(context, mouseX, mouseY)
     }
 
     override fun drawForeground(context: DrawContext, mouseX: Int, mouseY: Int) {

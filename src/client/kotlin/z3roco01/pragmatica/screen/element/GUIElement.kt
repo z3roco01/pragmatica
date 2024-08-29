@@ -16,5 +16,5 @@ abstract class GUIElement(val x: Int, val y: Int) : Element, Narratable{
     }
 
     abstract fun render(context: DrawContext, mouseX: Int, mouseY: Int)
-    open fun drawMouseoverTooltip(context: DrawContext, x: Int, y: Int) {}
+    open fun drawMouseoverTooltip(context: DrawContext, mouseX: Int, mouseY: Int) {}
 }

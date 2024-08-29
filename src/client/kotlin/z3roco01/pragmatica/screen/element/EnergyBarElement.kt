@@ -1,22 +1,17 @@
 package z3roco01.pragmatica.screen.element
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder
-import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import z3roco01.pragmatica.Pragmatica
+import z3roco01.pragmatica.PragmaticaClient
 import z3roco01.pragmatica.screen.EnergyScreenHandler
 import kotlin.math.round
 
-class EnergyBarElement(x: Int, y: Int, val handler: EnergyScreenHandler, val client: MinecraftClient): GUIElement(x, y) {
+class EnergyBarElement(x: Int, y: Int, val handler: EnergyScreenHandler): GUIElement(x, y) {
     val ENERGY_BAR_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar.png")
     val ENERGY_BAR_BG_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar_bg.png")
-
-    protected fun getWorld(): ClientWorld? {
-        return this.client.world
-    }
 
     protected fun getPos(): BlockPos {
         return handler.data.pos
@@ -36,7 +31,7 @@ class EnergyBarElement(x: Int, y: Int, val handler: EnergyScreenHandler, val cli
         context.drawTexture(ENERGY_BAR_TEXT, x, y - barHeight + 1, 0, 0f, 52f - barHeight.toFloat(), 16, barHeight, 16, 52)
     }
 
-    override fun drawMouseoverTooltip(context: DrawContext, x: Int, y: Int) {
+    override fun drawMouseoverTooltip(context: DrawContext, mouseX: Int, mouseY: Int) {
     }
 
     override fun appendNarrations(builder: NarrationMessageBuilder) {

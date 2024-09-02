@@ -14,7 +14,5 @@ data class SyncEnergyContainerPayload(val amount: Long, val pos: BlockPos) : Cus
         val PACKET_CODEC = PacketCodec.tuple(PacketCodecs.VAR_LONG, SyncEnergyContainerPayload::amount, BlockPos.PACKET_CODEC, SyncEnergyContainerPayload::pos, ::SyncEnergyContainerPayload)
     }
 
-    override fun getId(): Id<out CustomPayload> {
-        return ID
-    }
+    override fun getId(): Id<out CustomPayload> = ID
 }

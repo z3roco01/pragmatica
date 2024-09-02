@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier
 import z3roco01.pragmatica.Pragmatica
 import z3roco01.pragmatica.screen.element.EnergyBarElement
 
-class BatteryScreen(handler: BatteryScreenHandler, playerInv: PlayerInventory, title: Text) : HandledScreen<BatteryScreenHandler>(handler, playerInv, title) {
+class AlloyerScreen(handler: AlloyerScreenHandler, playerInv: PlayerInventory, title: Text) : HandledScreen<AlloyerScreenHandler>(handler, playerInv, title) {
     val TEXTURE: Identifier = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/battery.png")
     lateinit var energyBar: EnergyBarElement
 

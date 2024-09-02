@@ -35,9 +35,7 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
             syncEnergy()
         }
 
-        override fun getCapacity(): Long {
-            return getEnergyCapacity()
-        }
+        override fun getCapacity() = getEnergyCapacity()
 
         override fun getMaxInsert(side: Direction?): Long {
             if(side == null || canInsertSide(side))
@@ -97,19 +95,15 @@ abstract class EnergyContainer(type: BlockEntityType<*>, pos: BlockPos, state: B
         markDirty()
     }
 
-    fun getEnergy(): Long {
-        return energyStorage.amount
-    }
+    fun getEnergy() = energyStorage.amount
 
     fun incrementEnergy(amount: Long) {
         // get the energy and add the amount, also keep it in check with the capacity
         setEnergy(getEnergy() + amount)
     }
 
-    fun decrementEnergy(amount: Long) {
-        // get the energy and decrement the amount, but ensure it doesnt go bellow 0
-        setEnergy(max(getEnergy() - amount, 0))
-    }
+    // get the energy and decrement the amount, but ensure it doesnt go bellow 0
+    fun decrementEnergy(amount: Long) = setEnergy(max(getEnergy() - amount, 0))
 
     override fun readNbt(nbt: NbtCompound, registryLookup: RegistryWrapper.WrapperLookup) {
         super.readNbt(nbt, registryLookup)

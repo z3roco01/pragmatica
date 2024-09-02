@@ -14,11 +14,13 @@ import z3roco01.pragmatica.Pragmatica
 class PragmaticaBlocks {
     companion object {
         val BATTERY_BLOCK = BatteryBlock()
+        val ALLOYER_BLOCK = AlloyerBlock()
         val PINK_GOLD_BLOCK = Block(Settings.copy(Blocks.GOLD_BLOCK).mapColor(DyeColor.PINK))
 
         fun register() {
             register(BATTERY_BLOCK, "battery")
             register(PINK_GOLD_BLOCK, "pink_gold_block")
+            register(ALLOYER_BLOCK, "alloyer")
         }
 
         private fun register(block: Block, id: String) {

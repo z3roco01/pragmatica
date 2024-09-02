@@ -11,9 +11,7 @@ abstract class GUIElement(val x: Int, val y: Int) : Element, Narratable{
         this.focused = focused
     }
 
-    override fun isFocused(): Boolean {
-        return focused
-    }
+    override fun isFocused() = focused
 
     abstract fun render(context: DrawContext, mouseX: Int, mouseY: Int)
     open fun drawMouseoverTooltip(context: DrawContext, mouseX: Int, mouseY: Int) {}

@@ -3,7 +3,7 @@ package z3roco01.pragmatica.screen
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.screen.slot.Slot
 
-class AlloyerScreenHandler(syncId: Int, playerInv: PlayerInventory, data: EnergyContainerScreenData) : EnergyScreenHandler(PragmaticaScreenHandlers.BATTERY_SCREEN_HANDLER, syncId, playerInv, data){
+class AlloyerScreenHandler(syncId: Int, playerInv: PlayerInventory, data: EnergyContainerScreenData) : EnergyScreenHandler(PragmaticaScreenHandlers.ALLOYER_SCREEN_HANDLER, syncId, playerInv, data){
     init {
         addPlayerInventory(playerInv)
     }

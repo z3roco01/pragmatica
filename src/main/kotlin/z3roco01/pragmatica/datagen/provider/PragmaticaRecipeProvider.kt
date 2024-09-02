@@ -9,7 +9,7 @@ import net.minecraft.registry.RegistryWrapper
 import z3roco01.pragmatica.item.PragmaticaItems
 import java.util.concurrent.CompletableFuture
 
-class PragmaticaReciperProvider(dataOutput: FabricDataOutput, registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>): FabricRecipeProvider(dataOutput, registriesFuture) {
+class PragmaticaRecipeProvider(dataOutput: FabricDataOutput, registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>): FabricRecipeProvider(dataOutput, registriesFuture) {
     override fun generate(exporter: RecipeExporter) {
         offerSmelting(exporter, listOf(PragmaticaItems.RAW_CHALCOPYRITE, PragmaticaItems.RAW_CHRYSOCOLLA, PragmaticaItems.RAW_TETRAHEDRITE), RecipeCategory.MISC, Items.COPPER_INGOT, 0.7f, 200, "copper_ingot")
     }

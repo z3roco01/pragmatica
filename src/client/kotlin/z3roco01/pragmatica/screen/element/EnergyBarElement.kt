@@ -8,8 +8,8 @@ import z3roco01.pragmatica.screen.EnergyScreenHandler
 import kotlin.math.round
 
 class EnergyBarElement(x: Int, y: Int, val handler: EnergyScreenHandler): GUIElement(x, y) {
-    val ENERGY_BAR_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar.png")
-    val ENERGY_BAR_BG_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar_bg.png")
+    val ENERGY_BAR_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar/energy_bar.png")
+    val ENERGY_BAR_BG_TEXT = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/sprite/energy_bar/energy_bar_bg.png")
 
     protected fun getPos() = handler.data.pos
 

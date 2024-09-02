@@ -9,13 +9,13 @@ import z3roco01.pragmatica.Pragmatica
 import z3roco01.pragmatica.screen.element.EnergyBarElement
 
 class AlloyerScreen(handler: AlloyerScreenHandler, playerInv: PlayerInventory, title: Text) : HandledScreen<AlloyerScreenHandler>(handler, playerInv, title) {
-    val TEXTURE: Identifier = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/battery.png")
+    val TEXTURE: Identifier = Identifier.of(Pragmatica.MOD_ID, "textures/gui/container/alloyer.png")
     lateinit var energyBar: EnergyBarElement
 
     override fun init() {
         super.init()
         this.titleX = (this.backgroundWidth - textRenderer.getWidth(this.title)) / 2
-        energyBar = EnergyBarElement(80, 68, handler)
+        energyBar = EnergyBarElement(151, 75, handler)
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {

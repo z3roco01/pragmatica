@@ -7,6 +7,7 @@ import z3roco01.pragmatica.block.entity.PragmaticaBlockEntities
 import z3roco01.pragmatica.item.PragmaticaItemGroups
 import z3roco01.pragmatica.item.PragmaticaItems
 import z3roco01.pragmatica.network.PragmaticaServerPayloads
+import z3roco01.pragmatica.recipe.PragmaticaRecipes
 import z3roco01.pragmatica.screen.PragmaticaScreenHandlers
 
 object Pragmatica : ModInitializer {
@@ -22,5 +23,6 @@ object Pragmatica : ModInitializer {
 		PragmaticaScreenHandlers.register()
 		PragmaticaServerPayloads.register()
 		PragmaticaItemGroups.register()
+		PragmaticaRecipes.register()
 	}
 }
